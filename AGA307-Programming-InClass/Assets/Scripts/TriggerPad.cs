@@ -28,7 +28,7 @@ public class TriggerPad : MonoBehaviour
             //change size of the sphere by 0.01f
             sphere.transform.localScale += Vector3.one * 0.01f;
 
-            //Open door
+            //Open door. Basically make it disappear
 
         }
     }
@@ -42,7 +42,7 @@ public class TriggerPad : MonoBehaviour
             sphere.transform.localScale = Vector3.one;
             sphere.GetComponent<Renderer>().material.color = Color.white;
 
-            //Close the door
+            //Close the door. Make it re-appear
 
         }
     }
