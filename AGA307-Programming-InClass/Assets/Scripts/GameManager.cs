@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,13 @@ public class GameManager : Singleton<GameManager>
     public Difficulty difficulty;
     public int score;
     public int scoreMultiplier = 1;
+
+    public static event Action<Difficulty> OnDifficultyChanged = null;
+    private void start()
+    {
+        SetUp();
+        OnDifficultyChanged?.Invoke(difficulty);
+    }
 
     void SetUp()
     {
