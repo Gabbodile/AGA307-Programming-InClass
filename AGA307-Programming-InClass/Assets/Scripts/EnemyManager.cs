@@ -14,8 +14,11 @@ public enum PatrolType
     Linear, Random, Loop
 }
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : Singleton<EnemyManager>
 {
+
+    public float health;
+
     //Using square brackets, it calls in an array. 
     public Transform[] spawnPoints;     //Contains the amount of spawnpoints
     public List<GameObject> enemies;    //Contains all the enemies in the scene
@@ -33,6 +36,7 @@ public class EnemyManager : MonoBehaviour
     {
         _GM = FindObjectOfType<GameManager>();
         StartCoroutine(SpawnDelay());
+        ShuffleList(enemies);
     }
 
     private void Update()
@@ -95,7 +99,7 @@ public class EnemyManager : MonoBehaviour
     /// Kills specific enemy
     /// </summary>
     /// <param name="_enemy"></param>
-    void KillEnemy(GameObject _enemy)
+    public void KillEnemy(GameObject _enemy)
     {
         //kills an enemy. Destroy the GameObject
         if(enemies.Count == 0)
@@ -149,5 +153,15 @@ public class EnemyManager : MonoBehaviour
     public Transform GetRandomSpawnPoint()
     {
         return spawnPoints[Random.Range(0, spawnPoints.Length)];
+    }
+
+    private void OnEnable()
+    {
+        Enemy.OnEnemyDie += KillEnemy;
+    }
+
+    private void OnDisable()
+    {
+        Enemy.OnEnemyDie -= KillEnemy;
     }
 }

@@ -1,14 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
-public class Enemy : MonoBehaviour
+public class Enemy : GameBehaviour
 {
+    public static event Action<GameObject> OnEnemyHit = null;
+    public static event Action<GameObject> OnEnemyDie = null;
+
     public EnemyType MyType;
     public float mySpeed = 2f;
     public int myHealth = 100;
     Transform moveToPos;
-    EnemyManager _EM;       //calls another script into this script
 
     [Header("AI")]              //creates a new header
     public PatrolType myPatrol;
@@ -19,10 +23,27 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        _EM = FindObjectOfType<EnemyManager>();     //Immediately searches when game starts
         SetUp();
         StartCoroutine(move());
         SetupAI();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Hit(10);
+        }
+    }
+
+    void Hit(int _damage)
+    {
+        myHealth -= _damage;
+        if (myHealth <= 0)
+            Die();
+        else
+            OnEnemyHit?.Invoke(this.gameObject);
+           // _GM.AddScore(10);
     }
 
     void SetUp()
@@ -55,6 +76,15 @@ public class Enemy : MonoBehaviour
         endPos = _EM.GetRandomSpawnPoint();
         moveToPos = endPos;
     }
+
+    void Die()
+    {
+        StopAllCoroutines();
+        OnEnemyDie?.Invoke(this.gameObject);
+        //_GM.AddScore(100);
+        //_EM.KillEnemy(this.gameObject);
+    }
+
 
     IEnumerator move()
     {

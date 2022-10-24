@@ -4099,6 +4099,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28927005839272c4f8ba292b6ed3b735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontDestroy: 0
+  health: 0
   spawnPoints:
   - {fileID: 1887862022}
   - {fileID: 872944898}
@@ -38667,9 +38669,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95bfb60844e371546a69855e57aef08a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontDestroy: 0
   gameState: 1
   difficulty: 0
   score: 0
+  scoreMultiplier: 1
 --- !u!1 &2137999907
 GameObject:
   m_ObjectHideFlags: 0
