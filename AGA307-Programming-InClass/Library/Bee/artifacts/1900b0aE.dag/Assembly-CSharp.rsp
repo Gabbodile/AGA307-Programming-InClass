@@ -349,6 +349,7 @@
 "Assets/Scripts/Projectile.cs"
 "Assets/Scripts/Singleton.cs"
 "Assets/Scripts/TriggerPad.cs"
+"Assets/Scripts/UIManager.cs"
 -langversion:9.0
 
 /deterministic

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -18,12 +19,23 @@ public class GameManager : Singleton<GameManager>
     public Difficulty difficulty;
     public int score;
     public int scoreMultiplier = 1;
+    float timer;
 
     public static event Action<Difficulty> OnDifficultyChanged = null;
     private void start()
     {
+        timer = 0;
         SetUp();
         OnDifficultyChanged?.Invoke(difficulty);
+    }
+
+    private void Update()
+    {
+        if(gameState == GameState.Playing)
+        {
+            timer += Time.deltaTime;
+            _UI.UpdateTimer(timer);
+        }
     }
 
     void SetUp()
@@ -48,8 +60,27 @@ public class GameManager : Singleton<GameManager>
     public void AddScore(int _score)
     {
         score = _score * scoreMultiplier;
+        _UI.UpdateScore(score);
     }
 
+    public void LoadGame()
+    {
+        SceneManager.LoadScene("Game");
+    }
+    public void LoadTitle()
+    {
+        SceneManager.LoadScene("Title");
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void ChangeDifficulty(int _difficulty)
+    {
+        difficulty = (Difficulty)_difficulty;
+        SetUp();
+    }
     private void OnEnable()
     {
         Enemy.OnEnemyHit += OnEnemyHit;

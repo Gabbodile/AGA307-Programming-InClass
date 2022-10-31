@@ -30,11 +30,9 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public string killCondition = "Two";
 
-    GameManager _GM;
 
     void Start()
     {
-        _GM = FindObjectOfType<GameManager>();
         StartCoroutine(SpawnDelay());
         ShuffleList(enemies);
     }
@@ -81,6 +79,7 @@ public class EnemyManager : Singleton<EnemyManager>
         int spawnPoint = Random.Range(0, spawnPoints.Length);
         GameObject enemy = Instantiate(enemyTypes[enemyNumber], spawnPoints[spawnPoint].position, spawnPoints[spawnPoint].rotation, transform);
         enemies.Add (enemy);
+        _UI.EnemyCount(enemies.Count);
         //print(enemies.Count);
     }
     /// <summary>
