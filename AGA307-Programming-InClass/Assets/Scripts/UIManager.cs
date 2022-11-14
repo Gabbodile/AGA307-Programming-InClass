@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using TMPro;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -20,20 +20,28 @@ public class UIManager : Singleton<UIManager>
         scoreText.text = "Score: " + _score;
     }
 
-    public void EnemyCount(int _count)
+    public void UpdateEnemyCount(int _count)
     {
-        enemyCountText.text = "Enemies Left: " + _count;
+        enemyCountText.text = "Enemy Count: " + _count;
     }
 
     public void UpdateDifficulty(Difficulty _difficulty)
     {
-        difficultyText.text = _difficulty.ToString();
+        difficultyText.text = "Difficulty: " + _difficulty.ToString();
     }
 
     public void UpdateTimer(float _time)
     {
-        timerText.text = "Time:" + _time.ToString("F2");
+        timerText.text = "Time: " + _time.ToString("F2");
     }
 
+    private void OnEnable()
+    {
+        GameEvents.OnDifficultyChanged += UpdateDifficulty;
+    }
 
+    private void OnDisable()
+    {
+        GameEvents.OnDifficultyChanged -= UpdateDifficulty;
+    }
 }

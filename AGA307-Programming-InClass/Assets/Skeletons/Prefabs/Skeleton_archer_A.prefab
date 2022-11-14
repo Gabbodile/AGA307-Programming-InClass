@@ -489,10 +489,11 @@ GameObject:
   m_Component:
   - component: {fileID: 438824}
   - component: {fileID: 9595696}
-  - component: {fileID: -2493855942951625683}
+  - component: {fileID: 7722573371265044303}
+  - component: {fileID: 6641278188152120830}
   m_Layer: 0
   m_Name: Skeleton_archer_A
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -534,7 +535,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-2493855942951625683
+--- !u!114 &7722573371265044303
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -543,12 +544,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 133616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e59dec8d12406c649b4a360250169819, type: 3}
+  m_Script: {fileID: 11500000, guid: 330b6cd1724e6e3448baffc4e79e3c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyType: 2
-  mySpeed: 2
+  myType: 2
+  mySpeed: 5
   myHealth: 50
+  myPatrol: 0
+  patrolPoint: 0
+  reverse: 0
+  startPos: {fileID: 0}
+  endPos: {fileID: 0}
+  moveToPos: {fileID: 0}
+--- !u!136 &6641278188152120830
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133616}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1 &134496
 GameObject:
   m_ObjectHideFlags: 0

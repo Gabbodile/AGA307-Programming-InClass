@@ -2,106 +2,98 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
 
 public class Enemy : GameBehaviour
 {
-    public static event Action<GameObject> OnEnemyHit = null;
-    public static event Action<GameObject> OnEnemyDie = null;
+    public EnemyType myType;
+    public float mySpeed;
+    public float myHealth;
 
-    public EnemyType MyType;
-    public float mySpeed = 2f;
-    public int myHealth = 100;
-    Transform moveToPos;
-
-    [Header("AI")]              //creates a new header
+    [Header("AI")]
     public PatrolType myPatrol;
-    int patrolPoint = 0;        //needed for linear patrol movement
-    bool reverse = false;       //needed for repeat patrol movement
-    Transform startPos;         //needed for repeat patrol movement
-    Transform endPos;           //needed for repeat patrol movement
+    public int patrolPoint = 0;            //Needed for linear patrol movement
+    public bool reverse = false;           //Needed for repeat patrol movement
+    public Transform startPos;             //Needed for repeat patrol movement
+    public Transform endPos;               //Needed for repeat patrol movement
+    public Transform moveToPos;
+
+    [Header("Health Bar")]
+    public Slider healthBarSlider;
 
     void Start()
     {
-        SetUp();
-        StartCoroutine(move());
+        Setup();
         SetupAI();
+        StartCoroutine(Move());
+        transform.SetPositionAndRotation(transform.position, transform.rotation);
     }
 
-    private void Update()
+    void Setup()
     {
-        if (Input.GetKeyDown(KeyCode.H))
+        float healthModifier = 1;
+        float speedModifier = 1;
+        switch(_GM.difficulty)
         {
-            Hit(10);
+            case Difficulty.Easy:
+                healthModifier = 1f;
+                speedModifier = 1f;
+                break;
+            case Difficulty.Medium:
+                healthModifier = 2f;
+                speedModifier = 1.2f;
+                break;
+            case Difficulty.Hard:
+                healthModifier = 3f;
+                speedModifier = 1.5f;
+                break;
+            default:
+                healthModifier = 1f;
+                speedModifier = 1f;
+                break;
         }
-    }
 
-    void Hit(int _damage)
-    {
-        myHealth -= _damage;
-        if (myHealth <= 0)
-            Die();
-        else
-            OnEnemyHit?.Invoke(this.gameObject);
-           // _GM.AddScore(10);
-    }
-
-    void SetUp()
-    {
-        switch (MyType)
+        switch(myType)
         {
             case EnemyType.OneHand:
-                myHealth = 100;
-                mySpeed = 2f;
+                myHealth = 100f * healthModifier;
+                mySpeed = 2f * speedModifier;
                 myPatrol = PatrolType.Linear;
                 break;
-
             case EnemyType.TwoHand:
-                myHealth = 200;
-                mySpeed = 1f;
+                myHealth = 200f * healthModifier;
+                mySpeed = 1f * speedModifier;
                 myPatrol = PatrolType.Loop;
                 break;
-
             case EnemyType.Archer:
-                myHealth = 50;
-                mySpeed = 5f;
+                myHealth = 60f * healthModifier;
+                mySpeed = 5f * speedModifier;
                 myPatrol = PatrolType.Random;
                 break;
         }
     }
-    
+
     void SetupAI()
     {
-        startPos = transform;
+        startPos = Instantiate(new GameObject(), transform.position, transform.rotation).transform;
         endPos = _EM.GetRandomSpawnPoint();
         moveToPos = endPos;
     }
 
-    void Die()
+    IEnumerator Move()
     {
-        StopAllCoroutines();
-        OnEnemyDie?.Invoke(this.gameObject);
-        //_GM.AddScore(100);
-        //_EM.KillEnemy(this.gameObject);
-    }
-
-
-    IEnumerator move()
-    {
-        switch (myPatrol)
+        switch(myPatrol)
         {
             case PatrolType.Linear:
                 moveToPos = _EM.spawnPoints[patrolPoint];
                 patrolPoint = patrolPoint != _EM.spawnPoints.Length ? patrolPoint + 1 : 0;
-                break;    
-            
+                break;
             case PatrolType.Random:
                 moveToPos = _EM.GetRandomSpawnPoint();
                 break;
-            
             case PatrolType.Loop:
                 moveToPos = reverse ? startPos : endPos;
-                reverse = !reverse;     //reverse a bool
+                reverse = !reverse;
                 break;
         }
 
@@ -111,5 +103,46 @@ public class Enemy : GameBehaviour
             transform.position = Vector3.MoveTowards(transform.position, moveToPos.position, Time.deltaTime * mySpeed);
             yield return null;
         }
+
+        yield return new WaitForSeconds(1);
+
+        StartCoroutine(Move());
+
+        healthBarSlider.maxValue = myHealth;
+        healthBarSlider.value = myHealth;
+        UpdateHealthbar();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+            Hit(10);
+    }
+
+    void UpdateHealthbar()
+    {
+        healthBarSlider.value = myHealth;
+    }
+
+    public void Hit(int _damage)
+    {
+        myHealth -= _damage;
+        if (myHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            GameEvents.ReportEnemyHit(this.gameObject);
+        }
+    }
+
+
+    void Die()
+    {
+        StopAllCoroutines();
+        GameEvents.ReportEnemyDie(this.gameObject);
+    }
+
+    
 }

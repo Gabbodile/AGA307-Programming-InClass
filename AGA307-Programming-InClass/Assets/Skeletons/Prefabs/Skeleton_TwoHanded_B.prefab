@@ -1512,10 +1512,11 @@ GameObject:
   m_Component:
   - component: {fileID: 463548}
   - component: {fileID: 9536858}
-  - component: {fileID: -2864229522730354861}
+  - component: {fileID: -6863753788219935995}
+  - component: {fileID: -2946933211583137085}
   m_Layer: 0
   m_Name: Skeleton_TwoHanded_B
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1529,7 +1530,7 @@ Transform:
   m_GameObject: {fileID: 159544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 410180}
@@ -1559,7 +1560,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-2864229522730354861
+--- !u!114 &-6863753788219935995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1568,12 +1569,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 159544}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e59dec8d12406c649b4a360250169819, type: 3}
+  m_Script: {fileID: 11500000, guid: 330b6cd1724e6e3448baffc4e79e3c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MyType: 1
-  mySpeed: 2
+  myType: 1
+  mySpeed: 1
   myHealth: 200
+  myPatrol: 0
+  patrolPoint: 0
+  reverse: 0
+  startPos: {fileID: 0}
+  endPos: {fileID: 0}
+  moveToPos: {fileID: 0}
+--- !u!136 &-2946933211583137085
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159544}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1 &162436
 GameObject:
   m_ObjectHideFlags: 0

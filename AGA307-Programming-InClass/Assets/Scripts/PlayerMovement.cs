@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : GameBehaviour
 {
-     public CharacterController controller;
+    public CharacterController controller;
 
-    //Apparently continuos jumping == Flight??. 
     public float speed = 12f;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
@@ -19,12 +18,11 @@ public class PlayerMovement : GameBehaviour
 
     bool isGrounded;
 
+
     void Update()
     {
         if (_GM.gameState != GameState.Playing)
-        {
             return;
-        }
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
