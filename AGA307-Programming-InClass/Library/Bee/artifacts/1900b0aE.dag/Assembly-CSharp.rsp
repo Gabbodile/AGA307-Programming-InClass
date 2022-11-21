@@ -350,6 +350,7 @@
 "Assets/Scripts/Projectile.cs"
 "Assets/Scripts/SceneController.cs"
 "Assets/Scripts/Singleton.cs"
+"Assets/Scripts/Target.cs"
 "Assets/Scripts/Timer.cs"
 "Assets/Scripts/TriggerPad.cs"
 "Assets/Scripts/UIManager.cs"
